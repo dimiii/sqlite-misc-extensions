@@ -1,0 +1,7 @@
+FROM sqlite-misc-ext:latest AS sqlite-misc-ext
+
+FROM amd64/alpine:3.3
+
+RUN apk add --no-cache sqlite
+
+COPY --from=sqlite-misc-ext /opt/sqlite-misc-extensions /opt/sqlite-misc-extensions

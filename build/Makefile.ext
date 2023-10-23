@@ -1,0 +1,18 @@
+SRC_DIR := ../ext/misc
+OBJ_DIR := ext/misc
+
+ALL_C_FILES := $(wildcard $(SRC_DIR)/*.c)
+
+# Filter the files to exclude those without SQLITE_EXTENSION_INIT1
+C_FILES := $(filter $(ALL_C_FILES), $(shell grep -l 'SQLITE_EXTENSION_INIT1' $(ALL_C_FILES)))
+O_FILES := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.so,$(C_FILES))
+
+
+build_misc: $(O_FILES)
+
+
+$(OBJ_DIR)/%.so: $(SRC_DIR)/%.c
+	$(CC) --shared -g -fPIC $< -o $@
+
+clean:
+	rm -rf $(O_FILES)
